@@ -71,19 +71,11 @@ export const STORAGE_KEYS = {
 export function initializeStorage(): void {
   if (typeof window === 'undefined') return;
 
-  const PURGE_KEY = 'the_margin_round_25_beta_release_v1';
+  const PURGE_KEY = 'the_margin_round_27_release_v1';
   if (!localStorage.getItem(PURGE_KEY)) {
-    // Purge old mock storage from previous version to guarantee no legacy fake data remains
-    localStorage.removeItem(STORAGE_KEYS.USERS);
-    localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+    // Purge old mock/previous round storage to guarantee fresh Round 27 fixtures
     localStorage.removeItem(STORAGE_KEYS.ROUNDS);
     localStorage.removeItem(STORAGE_KEYS.FIXTURES);
-    localStorage.removeItem(STORAGE_KEYS.LEAGUES);
-    localStorage.removeItem(STORAGE_KEYS.H2H_LEAGUES);
-    localStorage.removeItem(STORAGE_KEYS.H2H_STANDINGS);
-    localStorage.removeItem(STORAGE_KEYS.H2H_MATCHUPS);
-    localStorage.removeItem(STORAGE_KEYS.TIPS);
-    localStorage.removeItem(STORAGE_KEYS.DUELS);
     localStorage.setItem(PURGE_KEY, 'true');
   }
 

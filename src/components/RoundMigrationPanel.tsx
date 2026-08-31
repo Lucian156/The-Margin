@@ -7,15 +7,14 @@ import React, { useState } from 'react';
 import { RotateCcw, AlertTriangle, CheckCircle2, Shield, Database, RefreshCw, Eye, Play } from 'lucide-react';
 import { collection, getDocs, updateDoc, doc, setDoc, writeBatch } from 'firebase/firestore';
 import { db } from '../firebase';
-import { ROUND_25_FIXTURES, CANONICAL_ROUND_ID } from '../config/round25';
+import { ROUND_27_FIXTURES, CANONICAL_ROUND_ID, CANONICAL_ROUND_NAME, CANONICAL_COMPETITION_NAME } from '../config/round27';
 import { getUsers, getTips, saveFixtures } from '../services/storageService';
 
 export const RoundMigrationPanel: React.FC = () => {
   const [isPreviewing, setIsPreviewing] = useState(false);
   const [isApplying, setIsApplying] = useState(false);
   const [previewData, setPreviewData] = useState<{
-    round24PredictionsCount: number;
-    round23RecordsCount: number;
+    previousPredictionsCount: number;
     demoUsersCount: number;
     demoLeaguesCount: number;
     demoPredictionsCount: number;
@@ -35,17 +34,13 @@ export const RoundMigrationPanel: React.FC = () => {
     try {
       // Query Firestore predictions
       const predSnap = await getDocs(collection(db, 'predictions'));
-      let round24Preds = 0;
-      let round23Preds = 0;
+      let prevPreds = 0;
       let demoPreds = 0;
 
       predSnap.forEach((d) => {
         const data = d.data();
-        if (data.roundId === 'round-24' || data.roundId === 'nrl-2026-round-24' || data.fixtureId?.startsWith('fix-24')) {
-          round24Preds++;
-        }
-        if (data.roundId === 'round-23' || data.fixtureId?.startsWith('fix-23')) {
-          round23Preds++;
+        if (data.roundId !== CANONICAL_ROUND_ID) {
+          prevPreds++;
         }
         if (data.userId?.startsWith('demo-') || data.isDemo === true) {
           demoPreds++;
@@ -72,19 +67,16 @@ export const RoundMigrationPanel: React.FC = () => {
       const demoLocalUsers = localUsers.filter((u) => u.id?.startsWith('demo-') || u.isDemo).length;
 
       setPreviewData({
-        round24PredictionsCount: round24Preds,
-        round23RecordsCount: round23Preds,
+        previousPredictionsCount: prevPreds,
         demoUsersCount: demoUsers + demoLocalUsers,
-        demoLeaguesCount: 3, // Standard demo leagues
+        demoLeaguesCount: 3,
         demoPredictionsCount: demoPreds,
         incompleteProfilesCount: incompleteProfiles,
       });
     } catch (err) {
       console.error('Preview migration error:', err);
-      // Fallback preview
       setPreviewData({
-        round24PredictionsCount: 12,
-        round23RecordsCount: 0,
+        previousPredictionsCount: 12,
         demoUsersCount: 5,
         demoLeaguesCount: 2,
         demoPredictionsCount: 8,
@@ -100,7 +92,7 @@ export const RoundMigrationPanel: React.FC = () => {
     try {
       let archivedCount = 0;
 
-      // 1. Archive Round 24 predictions
+      // 1. Archive legacy round predictions
       const predSnap = await getDocs(collection(db, 'predictions'));
       const batch = writeBatch(db);
 
@@ -109,7 +101,7 @@ export const RoundMigrationPanel: React.FC = () => {
         if (data.roundId !== CANONICAL_ROUND_ID) {
           batch.update(doc(db, 'predictions', d.id), {
             archived: true,
-            archivedReason: 'Round 25 beta reset',
+            archivedReason: 'Round 27 reset',
             archivedAt: new Date().toISOString(),
           });
           archivedCount++;
@@ -120,20 +112,20 @@ export const RoundMigrationPanel: React.FC = () => {
         await batch.commit();
       }
 
-      // 2. Seed 8 canonical Round 25 fixtures to Firestore
-      for (const fix of ROUND_25_FIXTURES) {
+      // 2. Seed 8 canonical Round 27 fixtures to Firestore
+      for (const fix of ROUND_27_FIXTURES) {
         await setDoc(doc(db, 'fixtures', fix.id), fix, { merge: true });
       }
 
       // 3. Save local fixtures
-      saveFixtures(ROUND_25_FIXTURES);
+      saveFixtures(ROUND_27_FIXTURES);
 
       // 4. Update app settings for active round
       await setDoc(
-        doc(db, 'appSettings', 'round25'),
+        doc(db, 'appSettings', 'round27'),
         {
           activeRoundId: CANONICAL_ROUND_ID,
-          activeRoundName: 'THE MARGIN ROUND 25 BETA',
+          activeRoundName: CANONICAL_COMPETITION_NAME,
           updatedAt: new Date().toISOString(),
         },
         { merge: true }
@@ -144,7 +136,7 @@ export const RoundMigrationPanel: React.FC = () => {
 
       setAuditReport({
         archivedPredictions: archivedCount,
-        seededFixtures: ROUND_25_FIXTURES.length,
+        seededFixtures: ROUND_27_FIXTURES.length,
         activeRoundSet: CANONICAL_ROUND_ID,
         cleanedDemoCount: (previewData?.demoUsersCount || 0) + (previewData?.demoLeaguesCount || 0),
         timestamp: new Date().toISOString(),
@@ -169,10 +161,10 @@ export const RoundMigrationPanel: React.FC = () => {
         <div>
           <h2 className="text-xl font-black text-[#031128] uppercase flex items-center gap-2">
             <RotateCcw className="w-6 h-6 text-[#FFBF00]" />
-            Round 25 Migration & Database Utility
+            Round 27 Migration & Database Utility
           </h2>
           <p className="text-xs text-gray-500 mt-0.5">
-            Safely archive legacy Round 23/24 records, set active competition round to <strong className="text-[#031128]">{CANONICAL_ROUND_ID}</strong>, and verify pristine state.
+            Safely archive previous round records, set active competition round to <strong className="text-[#031128]">{CANONICAL_ROUND_ID}</strong>, and verify pristine state.
           </p>
         </div>
         <span className="bg-[#FFBF00] text-[#031128] font-black text-xs px-3 py-1 rounded-lg uppercase tracking-wider shadow">
@@ -188,7 +180,7 @@ export const RoundMigrationPanel: React.FC = () => {
           className="bg-[#0A2D55] hover:bg-[#031128] text-white font-black text-xs px-5 py-3 rounded-xl uppercase tracking-wider flex items-center gap-2 shadow transition-all active:scale-95 disabled:opacity-50"
         >
           {isPreviewing ? <RefreshCw className="w-4 h-4 animate-spin text-[#FFBF00]" /> : <Eye className="w-4 h-4 text-[#FFBF00]" />}
-          <span>PREVIEW ROUND 25 MIGRATION</span>
+          <span>PREVIEW ROUND 27 MIGRATION</span>
         </button>
 
         <button
@@ -197,7 +189,7 @@ export const RoundMigrationPanel: React.FC = () => {
           className="bg-[#159B5D] hover:bg-emerald-600 text-white font-black text-xs px-5 py-3 rounded-xl uppercase tracking-wider flex items-center gap-2 shadow-lg transition-all active:scale-95 disabled:opacity-50"
         >
           {isApplying ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4 fill-white" />}
-          <span>APPLY ROUND 25 MIGRATION</span>
+          <span>APPLY ROUND 27 MIGRATION</span>
         </button>
       </div>
 
@@ -207,14 +199,10 @@ export const RoundMigrationPanel: React.FC = () => {
           <h3 className="font-extrabold text-xs text-[#031128] uppercase tracking-wider flex items-center gap-2">
             <Database className="w-4 h-4 text-[#0A2D55]" /> Migration Audit Preview
           </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             <div className="bg-white p-3 rounded-xl border border-[#DDE4EC]">
-              <span className="text-[10px] text-gray-500 uppercase font-bold block">Round 24 Tips</span>
-              <span className="text-lg font-black text-[#031128] font-mono">{previewData.round24PredictionsCount}</span>
-            </div>
-            <div className="bg-white p-3 rounded-xl border border-[#DDE4EC]">
-              <span className="text-[10px] text-gray-500 uppercase font-bold block">Round 23 Records</span>
-              <span className="text-lg font-black text-[#031128] font-mono">{previewData.round23RecordsCount}</span>
+              <span className="text-[10px] text-gray-500 uppercase font-bold block">Previous Tips</span>
+              <span className="text-lg font-black text-[#031128] font-mono">{previewData.previousPredictionsCount}</span>
             </div>
             <div className="bg-white p-3 rounded-xl border border-[#DDE4EC]">
               <span className="text-[10px] text-gray-500 uppercase font-bold block">Demo Users</span>
@@ -241,10 +229,10 @@ export const RoundMigrationPanel: React.FC = () => {
         <div className="bg-emerald-500/10 border border-emerald-500/30 p-5 rounded-2xl text-[#031128] space-y-2 animate-fadeIn">
           <div className="flex items-center gap-2 text-emerald-700 font-extrabold text-sm uppercase">
             <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-            <span>Round 25 Migration Successfully Applied!</span>
+            <span>Round 27 Migration Successfully Applied!</span>
           </div>
           <p className="text-xs text-gray-600">
-            Active round set to <strong>{auditReport.activeRoundSet}</strong>. Archived {auditReport.archivedPredictions} legacy tips. Verified {auditReport.seededFixtures} official Round 25 fixtures.
+            Active round set to <strong>{auditReport.activeRoundSet}</strong>. Archived {auditReport.archivedPredictions} legacy tips. Verified {auditReport.seededFixtures} official Round 27 fixtures.
           </p>
           <div className="text-[10px] font-mono text-gray-500">
             Executed at: {new Date(auditReport.timestamp).toLocaleString()}

@@ -47,9 +47,9 @@ interface TippingViewProps {
 
 export const TippingView: React.FC<TippingViewProps> = ({ currentUser, setActiveTab }) => {
   const rounds = getRounds();
-  const round25 = rounds.find((r) => r.number === 25 || r.id === 'nrl-2026-round-25') || rounds.find((r) => r.isCurrent) || rounds[0];
+  const currentRound = rounds.find((r) => r.isCurrent) || rounds[0] || { id: 'nrl-2026-round-27', number: 27 };
 
-  const [selectedRoundId, setSelectedRoundId] = useState<string>('nrl-2026-round-25');
+  const [selectedRoundId, setSelectedRoundId] = useState<string>(() => currentRound.id);
   const [selectedFixtureForModal, setSelectedFixtureForModal] = useState<Fixture | null>(null);
   const [showSaveToast, setShowSaveToast] = useState(false);
 
@@ -183,7 +183,7 @@ export const TippingView: React.FC<TippingViewProps> = ({ currentUser, setActive
           <CheckCircle2 className="w-6 h-6 shrink-0" />
           <div>
             <p className="font-extrabold text-sm uppercase tracking-wide">Submission Update</p>
-            <p className="text-xs text-white/90">{submissionMessage || 'Your Round 25 margin predictions are saved.'}</p>
+            <p className="text-xs text-white/90">{submissionMessage || `Your ${activeRound?.name || 'Round 27'} margin predictions are saved.`}</p>
           </div>
         </div>
       )}
@@ -198,12 +198,12 @@ export const TippingView: React.FC<TippingViewProps> = ({ currentUser, setActive
               </span>
               <span className="bg-[#159B5D] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
                 <span className="w-2 h-2 rounded-full bg-white animate-ping" />
-                ROUND 25 ACTIVE
+                {activeRound?.name ? `${activeRound.name.toUpperCase()} ACTIVE` : 'ROUND 27 ACTIVE'}
               </span>
             </div>
 
             <h1 className="text-xl sm:text-3xl font-black uppercase tracking-tight text-white font-sans leading-none">
-              ENTER YOUR ROUND 25 TIPS
+              ENTER YOUR {activeRound?.number ? `ROUND ${activeRound.number}` : 'ROUND 27'} TIPS
             </h1>
 
             <p className="text-gray-300 text-xs sm:text-sm">

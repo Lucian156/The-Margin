@@ -48,10 +48,11 @@ import {
   NRLRound,
 } from '../types';
 
-import { ROUND_25_FIXTURES, CANONICAL_ROUND_ID } from '../config/round25';
+import { ROUND_27_FIXTURES, CANONICAL_ROUND_ID } from '../config/round27';
 
-export const OFFICIAL_ROUND_25_FIXTURES: Fixture[] = ROUND_25_FIXTURES;
-export const OFFICIAL_ROUND_24_FIXTURES: Fixture[] = ROUND_25_FIXTURES;
+export const OFFICIAL_ROUND_27_FIXTURES: Fixture[] = ROUND_27_FIXTURES;
+export const OFFICIAL_ROUND_25_FIXTURES: Fixture[] = ROUND_27_FIXTURES;
+export const OFFICIAL_ROUND_24_FIXTURES: Fixture[] = ROUND_27_FIXTURES;
 
 // Helper to check if a value is a Firestore sentinel (serverTimestamp, FieldValue, Timestamp)
 function isFirestoreSentinel(val: any): boolean {
@@ -92,7 +93,7 @@ export async function seedFirestoreFixtures(): Promise<void> {
   try {
     const snap = await getDocs(collection(db, 'fixtures'));
     if (snap.empty) {
-      for (const fix of OFFICIAL_ROUND_24_FIXTURES) {
+      for (const fix of OFFICIAL_ROUND_27_FIXTURES) {
         await setDoc(doc(db, 'fixtures', fix.id), sanitizeForFirestore(fix));
       }
     }

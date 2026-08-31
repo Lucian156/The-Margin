@@ -75,7 +75,7 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="bg-[#020812] border-b border-[#0A2D55]/60 text-xs py-1 px-4 hidden sm:flex justify-between items-center text-gray-300">
         <div className="flex items-center gap-2">
           <span className="bg-[#FFBF00] text-[#031128] font-bold px-1.5 py-0.5 rounded text-[10px] uppercase tracking-wider">
-            Round 24 Beta
+            Round 27 Active
           </span>
           <span className="font-medium text-gray-300">
             Pick the winner. Predict the margin. Lowest score wins.

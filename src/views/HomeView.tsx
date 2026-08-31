@@ -35,9 +35,12 @@ export const HomeView: React.FC<HomeViewProps> = ({ currentUser, setActiveTab })
   const fixtures = getFixtures();
   const tips = getUserTips(currentUser.id || currentUser.uid || currentUser.username);
   const users = getUsers();
-  const round25Fixtures = fixtures.filter((f) => f.roundId === 'nrl-2026-round-25' || f.roundId === 'round-25' || f.roundId === 'r25');
-  const submittedTipsCount = round25Fixtures.filter((f) => tips.some((t) => t.fixtureId === f.id)).length;
-  const isTipsComplete = submittedTipsCount === round25Fixtures.length && round25Fixtures.length > 0;
+  const rounds = getRounds();
+  const activeRound = rounds.find((r) => r.isCurrent) || rounds[0] || { id: 'nrl-2026-round-27', number: 27, name: 'Round 27' };
+  const currentRoundFixtures = fixtures.filter((f) => f.roundId === activeRound.id || f.roundId === `round-${activeRound.number}` || f.roundId === `r${activeRound.number}`) || fixtures;
+  const activeFixtures = currentRoundFixtures.length > 0 ? currentRoundFixtures : fixtures;
+  const submittedTipsCount = activeFixtures.filter((f) => tips.some((t) => t.fixtureId === f.id)).length;
+  const isTipsComplete = submittedTipsCount === activeFixtures.length && activeFixtures.length > 0;
 
   // Rank calculation
   const currentRank = users.findIndex((u) => u.id === currentUser.id) + 1 || 1;
@@ -57,7 +60,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ currentUser, setActiveTab })
           <div className="space-y-3 max-w-2xl">
             <div className="flex flex-wrap items-center gap-2">
               <span className="bg-[#FFBF00] text-[#031128] font-black text-[10px] sm:text-xs px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-lg uppercase tracking-wider shadow">
-                ROUND 25 BETA ACTIVE
+                ROUND {activeRound.number} ACTIVE
               </span>
               <span className="bg-[#159B5D] text-white text-[10px] sm:text-xs font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full flex items-center gap-1.5 shadow">
                 <span className="w-2 h-2 rounded-full bg-white animate-ping" />
@@ -79,7 +82,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ currentUser, setActiveTab })
                 className="bg-[#FFBF00] hover:bg-[#FFE179] text-[#031128] font-black text-xs sm:text-sm px-5 py-2.5 rounded-xl uppercase tracking-wider flex items-center gap-2 shadow-lg transition-transform hover:scale-105"
               >
                 <Trophy className="w-4 h-4" />
-                {isTipsComplete ? 'Review Your Round 25 Tips' : 'Submit Round 25 Tips'}
+                {isTipsComplete ? `Review Your Round ${activeRound.number} Tips` : `Submit Round ${activeRound.number} Tips`}
               </button>
               <button
                 onClick={() => setActiveTab('live')}
@@ -107,9 +110,9 @@ export const HomeView: React.FC<HomeViewProps> = ({ currentUser, setActiveTab })
 
             <div className="col-span-2 bg-[#0A2D55]/60 p-3 rounded-xl border border-[#0A2D55] flex items-center justify-between">
               <div>
-                <span className="text-[10px] text-gray-300 font-bold uppercase block">Round 25 Tips Status</span>
+                <span className="text-[10px] text-gray-300 font-bold uppercase block">Round {activeRound.number} Tips Status</span>
                 <span className="text-xs font-black text-white">
-                  {submittedTipsCount} / {round25Fixtures.length} Matches Tipped
+                  {submittedTipsCount} / {activeFixtures.length} Matches Tipped
                 </span>
               </div>
               {isTipsComplete ? (
@@ -147,7 +150,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ currentUser, setActiveTab })
             </div>
             <div>
               <h3 className="font-black text-xs uppercase tracking-wider text-[#031128]">Submit Tips</h3>
-              <p className="text-[10px] text-gray-500 mt-0.5">Round 25 predictions</p>
+              <p className="text-[10px] text-gray-500 mt-0.5">Round {activeRound.number} predictions</p>
             </div>
           </button>
 
@@ -209,16 +212,16 @@ export const HomeView: React.FC<HomeViewProps> = ({ currentUser, setActiveTab })
         </div>
       </div>
 
-      {/* ROUND 25 FIXTURES PREVIEW GRID */}
+      {/* ROUND FIXTURES PREVIEW GRID */}
       <div className="space-y-4">
         <div className="flex items-center justify-between bg-white p-4 rounded-2xl border border-[#DDE4EC] shadow-sm">
           <div>
             <h2 className="font-black text-base text-[#031128] uppercase tracking-wider flex items-center gap-2">
               <Trophy className="w-5 h-5 text-[#FFBF00]" />
-              Round 25 Match Schedule Preview
+              Round {activeRound.number} Match Schedule Preview
             </h2>
             <p className="text-xs text-gray-500">
-              {round25Fixtures.length} NRL matches in Round 25. Predict winning margins to earn points.
+              {activeFixtures.length} NRL matches in Round {activeRound.number}. Predict winning margins to earn points.
             </p>
           </div>
 
@@ -231,7 +234,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ currentUser, setActiveTab })
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-          {round25Fixtures.map((fixture) => {
+          {activeFixtures.map((fixture) => {
             const homeTeam = getTeamById(fixture.homeTeamId);
             const awayTeam = getTeamById(fixture.awayTeamId);
             const userTip = tips.find((t) => t.fixtureId === fixture.id);

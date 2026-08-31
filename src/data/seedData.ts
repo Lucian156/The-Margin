@@ -25,16 +25,16 @@ import {
   User,
 } from '../types';
 
-import { ROUND_25_FIXTURES } from '../config/round25';
+import { ROUND_27_FIXTURES, CANONICAL_ROUND_ID, CANONICAL_ROUND_NAME, CANONICAL_COMPETITION_NAME } from '../config/round27';
 
-// ONLY Round 25 Beta as requested
+// Round 27 Active Round
 export const SEEDED_ROUNDS: NRLRound[] = [
   {
-    id: 'nrl-2026-round-25',
-    number: 25,
-    name: 'THE MARGIN ROUND 25 BETA',
-    startDate: '2026-08-20',
-    endDate: '2026-08-23',
+    id: CANONICAL_ROUND_ID,
+    number: 27,
+    name: CANONICAL_COMPETITION_NAME,
+    startDate: '2026-09-03',
+    endDate: '2026-09-06',
     isCurrent: true,
     isCompleted: false,
   },
@@ -43,8 +43,8 @@ export const SEEDED_ROUNDS: NRLRound[] = [
 // Default registered beta players (empty - only real Firestore user profiles are displayed)
 export const SEEDED_USERS: User[] = [];
 
-// Round 25 Official Fixtures
-export const SEEDED_FIXTURES: Fixture[] = ROUND_25_FIXTURES;
+// Round 27 Official Fixtures
+export const SEEDED_FIXTURES: Fixture[] = ROUND_27_FIXTURES;
 
 export const SEEDED_TIPS: Tip[] = [];
 
