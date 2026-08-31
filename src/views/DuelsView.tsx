@@ -297,14 +297,14 @@ export const DuelsView: React.FC<DuelsViewProps> = ({ currentUser, initialTab = 
                 </span>
               </p>
               <p className="text-slate-300 text-[11px] mt-0.5">
-                Exactly <strong>2 hours before the first match</strong> of Round 24 starts, all players in the Head-to-Head league are randomly paired against each other for the round.
+                Exactly <strong>2 hours before the first match</strong> of {currentRoundObj?.name || 'the active round'} starts, all players in the Head-to-Head league are randomly paired against each other for the round.
               </p>
             </div>
           </div>
           <button
             onClick={() => {
               ensureH2HRandomPairings(selectedLeagueId, selectedRoundId, true);
-              triggerToast('⚡ H2H Random Pairings re-shuffled for Round 24!');
+              triggerToast(`⚡ H2H Random Pairings re-shuffled for ${currentRoundObj?.name || 'the round'}!`);
             }}
             className="px-3 py-1.5 rounded-lg bg-[#0A2D55] hover:bg-[#0A2D55]/80 text-[#FFBF00] font-bold text-[11px] flex items-center gap-1.5 border border-[#FFBF00]/30 shrink-0 transition-all active:scale-95"
             title="Force random pairing reshuffle for current round"
@@ -631,7 +631,7 @@ export const DuelsView: React.FC<DuelsViewProps> = ({ currentUser, initialTab = 
                 <Swords className="w-12 h-12 text-gray-300 mx-auto mb-3" />
                 <h3 className="text-lg font-black uppercase text-[#031128]">No completed matchups yet.</h3>
                 <p className="text-xs text-gray-500 mt-1 max-w-md mx-auto">
-                  Head-to-Head duels and ladder standings will calculate once official Round 24 match results are finalized.
+                  Head-to-Head duels and ladder standings will calculate once official {currentRoundObj?.name || 'Round'} match results are finalized.
                 </p>
               </div>
             ) : (
@@ -830,7 +830,7 @@ export const DuelsView: React.FC<DuelsViewProps> = ({ currentUser, initialTab = 
                 <Swords className="w-10 h-10 text-gray-300 mx-auto mb-2" />
                 <h3 className="text-base font-black uppercase text-[#031128]">No completed matchups yet.</h3>
                 <p className="text-xs text-gray-500 mt-1">
-                  Head-to-Head duels and ladder standings will calculate once official Round 24 match results are finalized.
+                  Head-to-Head duels and ladder standings will calculate once official {currentRoundObj?.name || 'Round'} match results are finalized.
                 </p>
               </div>
             ) : (

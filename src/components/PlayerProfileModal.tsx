@@ -133,15 +133,15 @@ export const PlayerProfileModal: React.FC<PlayerProfileModalProps> = ({
           </div>
         </div>
 
-        {/* Main Content Area - Submitted Round 24 Picks */}
+        {/* Main Content Area - Submitted Picks */}
         <div className="p-5 overflow-y-auto space-y-4 flex-1">
           <div className="flex items-center justify-between border-b border-[#DDE4EC] pb-3">
             <div>
               <h3 className="text-base font-black uppercase text-[#031128] flex items-center gap-2">
-                <Trophy className="w-4 h-4 text-[#FFBF00]" /> Round 24 Official Predictions
+                <Trophy className="w-4 h-4 text-[#FFBF00]" /> Official Match Predictions
               </h3>
               <p className="text-xs text-gray-500">
-                Submitted match winner selections and margin predictions for Round 24.
+                Submitted match winner selections and margin predictions.
               </p>
             </div>
             <span className={`px-2.5 py-1 rounded-full text-xs font-mono font-bold flex items-center gap-1.5 ${

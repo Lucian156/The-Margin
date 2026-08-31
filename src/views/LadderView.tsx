@@ -49,7 +49,7 @@ export const LadderView: React.FC<LadderViewProps> = ({ currentUser }) => {
             Overall Season Ladder & Registered Players
           </h1>
           <p className="text-gray-300 text-xs sm:text-sm mt-1 max-w-xl">
-            In The Margin, lower is better! Click any registered player below to inspect their profile and submitted Round 25 picks.
+            In The Margin, lower is better! Click any registered player below to inspect their profile and submitted predictions.
           </p>
         </div>
 

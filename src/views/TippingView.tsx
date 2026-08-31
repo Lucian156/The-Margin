@@ -254,7 +254,7 @@ export const TippingView: React.FC<TippingViewProps> = ({ currentUser, setActive
           <div>
             <h2 className="font-black text-lg text-[#031128] uppercase tracking-wider flex items-center gap-2">
               <Trophy className="w-5 h-5 text-[#FFBF00]" />
-              {activeRound?.name || 'Round 24 Fixtures'}
+              {activeRound?.name || 'Round 27 Fixtures'}
             </h2>
             <p className="text-xs text-gray-500">
               Select predicted winner & margin difference. (Lowest Total Margin Error Wins!)
@@ -466,7 +466,7 @@ export const TippingView: React.FC<TippingViewProps> = ({ currentUser, setActive
       <div className="fixed bottom-14 left-0 right-0 z-30 bg-[#031128] border-t border-[#0A2D55] p-3 shadow-2xl lg:hidden">
         <div className="max-w-md mx-auto flex items-center justify-between gap-3">
           <div className="text-white">
-            <span className="text-[10px] uppercase font-bold text-gray-400 block">Round 24 Progress</span>
+            <span className="text-[10px] uppercase font-bold text-gray-400 block">{activeRound?.name || 'Tips'} Progress</span>
             <span className="font-black text-xs text-[#FFBF00]">
               {filledTipsCount} of {fixtures.length} Tips Selected
             </span>

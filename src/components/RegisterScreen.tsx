@@ -326,7 +326,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ onRegistered }) 
                 THE MARGIN
               </span>
               <span className="bg-[#FFBF00] text-[#031128] text-[9px] font-black px-1.5 py-0.5 rounded uppercase">
-                ROUND 24 BETA
+                NRL TIPPING
               </span>
             </div>
             <p className="text-[11px] text-gray-400">NRL Margin Tipping Platform</p>
@@ -358,16 +358,16 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ onRegistered }) 
           <div className="space-y-3">
             <div className="inline-flex items-center gap-2 bg-[#0A2D55] text-[#FFBF00] text-xs font-black px-3 py-1 rounded-full border border-[#FFBF00]/30 shadow">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>ROUND 24 BETA TEST IS NOW LIVE</span>
+              <span>NRL TIPPING PLATFORM</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tight text-white leading-none">
               JOIN THE <br />
-              <span className="text-[#FFBF00]">ROUND 24</span> BETA
+              <span className="text-[#FFBF00]">NRL MARGIN</span> COMPETITION
             </h1>
 
             <p className="text-sm text-gray-300 leading-relaxed">
-              Register your tipper profile to test <strong className="text-white">The Margin</strong> for Round 24. Submit your predictions, create leagues, and challenge your mates.
+              Register your tipper profile to compete in <strong className="text-white">The Margin</strong>. Submit your round predictions, create leagues, and challenge your mates.
             </p>
           </div>
 
@@ -402,9 +402,9 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ onRegistered }) 
                 <Star className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="text-xs font-bold text-white uppercase">Real Round 24 NRL Fixtures</h4>
+                <h4 className="text-xs font-bold text-white uppercase">Official NRL Fixtures</h4>
                 <p className="text-[11px] text-gray-400">
-                  Compete on actual 2026 Round 24 NRL matches starting Thursday night.
+                  Compete on official NRL matches every round with live countdowns and scoring.
                 </p>
               </div>
             </div>
@@ -421,7 +421,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ onRegistered }) 
             <p className="text-xs text-gray-400 mt-1">
               {isLoginMode
                 ? 'Enter your registered email or username to access your tips.'
-                : 'Create your account in 30 seconds to lock in your Round 24 predictions.'}
+                : 'Create your account in 30 seconds to lock in your weekly predictions.'}
             </p>
           </div>
 
@@ -562,7 +562,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ onRegistered }) 
                   </>
                 ) : (
                   <>
-                    <span>Register & Enter Round 24</span>
+                    <span>Register & Enter Competition</span>
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
@@ -666,7 +666,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ onRegistered }) 
 
       {/* Footer */}
       <footer className="border-t border-[#0A2D55] bg-[#020812] py-4 px-6 text-center text-xs text-gray-500 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <p>© {new Date().getFullYear()} The Margin — Official Round 24 Beta Test Environment.</p>
+        <p>© {new Date().getFullYear()} The Margin — NRL Margin Tipping Platform.</p>
         <button
           type="button"
           onClick={() => setShowHealthCheck(true)}

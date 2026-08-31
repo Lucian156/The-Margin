@@ -423,15 +423,18 @@ export const AdminView: React.FC<AdminViewProps> = ({ currentUser, onRefreshData
     setFixtures(reset);
     setFinalisedFixturesCount(0);
     setShowResetConfirmModal(false);
-    setActionMessage('All Round 24 fixture results reset to UPCOMING.');
+    setActionMessage('All active round fixture results reset to UPCOMING.');
     setTimeout(() => setActionMessage(null), 3000);
     onRefreshData();
   };
 
   // Clear All Beta Data
   const handleClearAllBetaData = () => {
-    if (clearConfirmationInput.trim().toUpperCase() !== 'CLEAR ROUND 25 BETA') {
-      alert('Confirmation phrase does not match! Please type "CLEAR ROUND 25 BETA" exactly.');
+    if (
+      clearConfirmationInput.trim().toUpperCase() !== 'CLEAR BETA DATA' &&
+      clearConfirmationInput.trim().toUpperCase() !== 'CLEAR ROUND 27'
+    ) {
+      alert('Confirmation phrase does not match! Please type "CLEAR BETA DATA" exactly.');
       return;
     }
 
@@ -481,13 +484,13 @@ export const AdminView: React.FC<AdminViewProps> = ({ currentUser, onRefreshData
             <span className="bg-[#FFBF00] text-[#031128] font-black text-[10px] px-2.5 py-0.5 rounded uppercase tracking-wider">
               Admin & Tester Console
             </span>
-            <span className="text-xs text-[#FFE179] font-semibold">THE MARGIN ROUND 25 BETA</span>
+            <span className="text-xs text-[#FFE179] font-semibold">THE MARGIN ADMIN CONSOLE</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-black uppercase text-white font-sans">
             Admin Control Panel
           </h1>
           <p className="text-gray-300 text-xs sm:text-sm mt-1 max-w-2xl">
-            Manage Round 25 Beta testers, inspect submitted predictions, enter match results, perform round migrations, and view real-time diagnostics.
+            Manage competition tippers, inspect submitted predictions, enter match results, perform round migrations, and view real-time diagnostics.
           </p>
         </div>
 
@@ -517,7 +520,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ currentUser, onRefreshData
             }`}
           >
             <CheckCircle2 className="w-3.5 h-3.5" />
-            <span>R25 Predictions ({allTipsList.length})</span>
+            <span>Predictions ({allTipsList.length})</span>
           </button>
           <button
             onClick={() => setActiveTab('results')}
@@ -577,11 +580,11 @@ export const AdminView: React.FC<AdminViewProps> = ({ currentUser, onRefreshData
               </div>
               <div>
                 <h3 className="font-extrabold text-sm text-white flex items-center gap-2">
-                  <span>Round 24 Schedule Verified & Locked</span>
+                  <span>Active Fixture Schedule Verified & Locked</span>
                   <Lock className="w-3.5 h-3.5 text-emerald-400" />
                 </h3>
                 <p className="text-xs text-slate-300 mt-0.5 max-w-xl">
-                  Official NRL Round 24 fixture dates, venues, and kickoff times are permanently locked and verified across all tipping views.
+                  Official NRL fixture dates, venues, and kickoff times are permanently locked and verified across all tipping views.
                 </p>
                 <div className="mt-1 flex items-center gap-2 text-[10px] font-mono text-slate-400">
                   <span>Status:</span>
@@ -800,7 +803,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ currentUser, onRefreshData
           <div className="bg-white rounded-2xl border border-[#DDE4EC] p-6 shadow-sm space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#DDE4EC] pb-4">
               <div>
-                <h2 className="text-lg font-black text-[#031128] uppercase">Round 24 Official Results Entry</h2>
+                <h2 className="text-lg font-black text-[#031128] uppercase">Official Match Results Entry</h2>
                 <p className="text-xs text-gray-500">
                   Enter final scores to trigger automatic calculation of Game Scores, Round Totals, Overall Ranks & H2H Differentials.
                 </p>
@@ -876,7 +879,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ currentUser, onRefreshData
                   <Users className="w-5 h-5 text-[#FFBF00]" /> Submitted Tester Picks & Predictions
                 </h2>
                 <p className="text-xs text-gray-500">
-                  Inspect submitted predictions across all registered beta participants for Round 24.
+                  Inspect submitted predictions across all registered participants for the active round.
                 </p>
               </div>
               <span className="bg-[#031128] text-white text-xs font-mono font-bold px-3 py-1 rounded-lg">
@@ -1708,10 +1711,10 @@ export const AdminView: React.FC<AdminViewProps> = ({ currentUser, onRefreshData
           <div className="bg-[#031128] border border-[#0A2D55] rounded-2xl max-w-md w-full p-6 text-white space-y-4 shadow-2xl">
             <div className="flex items-center gap-3 text-amber-400">
               <RotateCcw className="w-6 h-6 shrink-0" />
-              <h3 className="font-extrabold text-lg text-white">Reset Round 24 Results</h3>
+              <h3 className="font-extrabold text-lg text-white">Reset Active Round Results</h3>
             </div>
             <p className="text-xs text-slate-300 leading-relaxed">
-              Are you sure you want to reset all Round 24 fixture results back to <strong>UPCOMING</strong>? This will clear all entered match scores and reset leaderboard scores for Round 24.
+              Are you sure you want to reset all active round fixture results back to <strong>UPCOMING</strong>? This will clear all entered match scores and reset leaderboard scores for the round.
             </p>
             <div className="flex items-center justify-end gap-3 pt-2">
               <button
@@ -1737,20 +1740,20 @@ export const AdminView: React.FC<AdminViewProps> = ({ currentUser, onRefreshData
           <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 text-white space-y-4 shadow-2xl">
             <div className="flex items-center gap-3 text-rose-400">
               <AlertTriangle className="w-6 h-6 shrink-0" />
-              <h3 className="font-extrabold text-lg text-white">Confirm Beta Data Purge</h3>
+              <h3 className="font-extrabold text-lg text-white">Confirm Data Purge</h3>
             </div>
             <p className="text-xs text-slate-300 leading-relaxed">
-              This action will clear all submitted Round 24 tips, custom leagues, and user stats back to clean default state.
+              This action will clear all submitted predictions, custom leagues, and user stats back to clean default state.
             </p>
             <div>
               <label className="block text-xs font-semibold text-slate-400 mb-1">
-                Type <strong className="text-amber-400">CLEAR ROUND 24 BETA</strong> to confirm:
+                Type <strong className="text-amber-400">CLEAR BETA DATA</strong> to confirm:
               </label>
               <input
                 type="text"
                 value={clearConfirmationInput}
                 onChange={(e) => setClearConfirmationInput(e.target.value)}
-                placeholder="CLEAR ROUND 24 BETA"
+                placeholder="CLEAR BETA DATA"
                 className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-sm text-white font-mono uppercase focus:border-rose-500 focus:outline-none"
               />
             </div>

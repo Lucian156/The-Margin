@@ -389,13 +389,13 @@ export const HomeView: React.FC<HomeViewProps> = ({ currentUser, setActiveTab })
               Cross Country Rentals (CCR)
             </h3>
             <p className="text-xs text-gray-300 mt-1 leading-relaxed">
-              Proud major sponsor of The Margin Round 24 Beta. Rent 12-seater vans, SUVs, and commercial vehicles across New Zealand & Australia.
+              Proud major sponsor of The Margin NRL Tipping. Rent 12-seater vans, SUVs, and commercial vehicles across New Zealand & Australia.
             </p>
           </div>
 
           <div className="bg-[#020812] p-3 rounded-xl border border-[#0A2D55] space-y-1">
             <span className="text-[10px] text-[#FFBF00] font-bold uppercase tracking-wider block">
-              Round 24 Prize Pool
+              Round {activeRound.number} Prize Pool
             </span>
             <p className="text-xs font-bold text-white">
               $500 CCR Rental Voucher for the Lowest Margin Score Tipper!

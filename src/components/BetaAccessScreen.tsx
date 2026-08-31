@@ -96,7 +96,7 @@ export const BetaAccessScreen: React.FC<BetaAccessScreenProps> = ({ onSuccess })
           </div>
           <h1 className="text-3xl font-extrabold text-[#031128] tracking-tight">THE MARGIN</h1>
           <div className="mt-2 inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-[#FFBF00] text-[#031128] tracking-wider uppercase shadow-sm">
-            ROUND 25 BETA
+            NRL MARGIN TIPPING
           </div>
           <p className="mt-3 text-sm font-semibold text-[#0A2D55]">
             Pick the winner. Predict the margin. Lowest score wins.
@@ -218,11 +218,11 @@ export const BetaAccessScreen: React.FC<BetaAccessScreenProps> = ({ onSuccess })
               {loading ? (
                 <>
                   <RefreshCw className="w-4 h-4 animate-spin text-[#FFBF00]" />
-                  <span>{loadingText || 'Creating your beta profile...'}</span>
+                  <span>{loadingText || 'Creating your profile...'}</span>
                 </>
               ) : (
                 <>
-                  <span>ENTER ROUND 25 BETA</span>
+                  <span>ENTER THE MARGIN</span>
                   <ArrowRight className="w-4 h-4 text-[#FFBF00]" />
                 </>
               )}
@@ -236,7 +236,7 @@ export const BetaAccessScreen: React.FC<BetaAccessScreenProps> = ({ onSuccess })
             CROSS COUNTRY RENTALS • MAJOR SPONSOR
           </p>
           <p className="text-xs font-semibold text-[#031128]">
-            Proudly supporting The Margin Round 25 Closed Beta
+            Proudly supporting The Margin NRL Tipping Competition
           </p>
         </div>
       </div>

@@ -44,7 +44,7 @@ import {
   SEEDED_BILLING_HISTORY,
 } from '../data/seedData';
 import { NRL_TEAMS } from '../data/nrlTeams';
-import { getCurrentUser, updateUser, getLeagues, getDuels, getFixtures, getH2HStandings } from '../services/storageService';
+import { getCurrentUser, updateUser, getLeagues, getDuels, getFixtures, getH2HStandings, getRounds } from '../services/storageService';
 import { User, MembershipTier } from '../types';
 import { PremiumFeatureGate } from '../components/PremiumFeatureGate';
 import { InviteQuickActions } from '../components/InviteQuickActions';
@@ -82,6 +82,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
 
   const nrlTeams = NRL_TEAMS;
   const favTeam = nrlTeams.find((t) => t.id === (currentUser.favoriteTeamId || 'WARRIORS')) || nrlTeams[0];
+  const activeRoundObj = getRounds().find((r) => r.isCurrent) || getRounds()[0];
   const userLeagues = getLeagues().filter((l) => l.memberUserIds.includes(currentUser.id));
   const userDuels = getDuels().filter(
     (d) => d.challengerUserId === currentUser.id || d.opponentUserId === currentUser.id
@@ -355,14 +356,14 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                   <History className="w-8 h-8 text-slate-500 mx-auto mb-2" />
                   <p className="text-sm font-bold text-slate-300">You have not completed any rounds yet.</p>
                   <p className="text-xs text-slate-400 mt-1">
-                    Your round history and margin stats will display here as soon as Round 24 matches complete.
+                    Your round history and margin stats will display here as soon as official match results are finalized.
                   </p>
                 </div>
               ) : (
                 <>
                   <div className="grid grid-cols-5 gap-2 text-center my-4">
                     {[
-                      { round: 'Round 24', score: currentUser.totalScore, label: `${currentUser.totalScore} pts` },
+                      { round: activeRoundObj?.name || 'Round 27', score: currentUser.totalScore, label: `${currentUser.totalScore} pts` },
                     ].map((r, i) => (
                       <div key={i} className="bg-[#020812] border border-[#0A2D55] rounded-xl p-3">
                         <span className="text-[10px] text-slate-400 uppercase font-bold block">{r.round}</span>
@@ -381,7 +382,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                   <div className="bg-[#020812] rounded-lg p-3 text-xs text-slate-300 flex justify-between items-center border border-[#0A2D55]">
                     <div>
                       <span className="text-slate-400">Current Round: </span>
-                      <strong className="text-[#FFBF00]">Round 24 Beta</strong>
+                      <strong className="text-[#FFBF00]">{activeRoundObj?.name || 'Round 27'}</strong>
                     </div>
                   </div>
                 </>
@@ -601,7 +602,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 <History className="w-8 h-8 text-slate-500 mx-auto mb-2" />
                 <p className="text-sm font-bold text-slate-300">You have not completed any rounds yet.</p>
                 <p className="text-xs text-slate-400 mt-1">
-                  Once Round 24 finishes and official match results are submitted, your round-by-round margin breakdown will appear here.
+                  Once active round matches finish and official results are submitted, your round-by-round margin breakdown will appear here.
                 </p>
               </div>
             ) : (

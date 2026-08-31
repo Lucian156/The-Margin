@@ -77,8 +77,8 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose, c
             <MessageSquare className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-xl font-bold">Round 24 Beta Feedback</h2>
-            <p className="text-xs text-slate-400">Help us polish The Margin before official launch</p>
+            <h2 className="text-xl font-bold">The Margin Tipper Feedback</h2>
+            <p className="text-xs text-slate-400">Help us polish The Margin experience</p>
           </div>
         </div>
 
