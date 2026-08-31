@@ -1,0 +1,6 @@
+{
+  "name": "The Margin",
+  "description": "NRL tipping application where users pick the winner and predict the winning margin. Lowest score wins.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,178 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile in The Margin",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "displayName": { "type": "string" },
+        "username": { "type": "string" },
+        "email": { "type": "string" },
+        "avatarUrl": { "type": "string" },
+        "role": { "type": "string" },
+        "isAdmin": { "type": "boolean" },
+        "membershipTier": { "type": "string" },
+        "status": { "type": "string" },
+        "favoriteTeamId": { "type": "string" },
+        "totalScore": { "type": "number" },
+        "roundsPlayed": { "type": "number" },
+        "perfectTipsCount": { "type": "number" },
+        "correctWinnersCount": { "type": "number" },
+        "wrongWinnersCount": { "type": "number" },
+        "averageMarginError": { "type": "number" },
+        "bio": { "type": "string" },
+        "homeRegion": { "type": "string" },
+        "memberSince": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" },
+        "lastLoginAt": { "type": "string" }
+      },
+      "required": ["id", "uid", "email", "displayName", "username", "createdAt", "membershipTier", "role", "status"]
+    },
+    "AuthRecord": {
+      "title": "AuthRecord",
+      "description": "Firebase Auth User audit trail record",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "lastSignInAt": { "type": "string" }
+      },
+      "required": ["uid", "email"]
+    },
+    "RegistrationError": {
+      "title": "RegistrationError",
+      "description": "Registration failure audit log",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "email": { "type": "string" },
+        "errorCode": { "type": "string" },
+        "errorMessage": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["email", "errorCode", "errorMessage"]
+    },
+    "Fixture": {
+      "title": "Fixture",
+      "description": "NRL Round 24 match fixture",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "roundId": { "type": "string" },
+        "homeTeamId": { "type": "string" },
+        "awayTeamId": { "type": "string" },
+        "startTime": { "type": "string" },
+        "venue": { "type": "string" },
+        "status": { "type": "string" },
+        "period": { "type": "string" },
+        "matchClock": { "type": "string" },
+        "homeScore": { "type": ["number", "null"] },
+        "awayScore": { "type": ["number", "null"] },
+        "winnerTeamId": { "type": ["string", "null"] },
+        "winningMargin": { "type": ["number", "null"] }
+      },
+      "required": ["id", "roundId", "homeTeamId", "awayTeamId", "startTime", "status"]
+    },
+    "Prediction": {
+      "title": "Prediction",
+      "description": "User tip for a fixture",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "fixtureId": { "type": "string" },
+        "predictedWinnerTeamId": { "type": "string" },
+        "predictedMargin": { "type": "number" },
+        "submittedAt": { "type": "string" },
+        "isLocked": { "type": "boolean" }
+      },
+      "required": ["id", "userId", "fixtureId", "predictedWinnerTeamId", "predictedMargin"]
+    },
+    "League": {
+      "title": "League",
+      "description": "Overall or Head-to-Head private/public league",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "code": { "type": "string" },
+        "description": { "type": "string" },
+        "createdByUserId": { "type": "string" },
+        "memberUserIds": { "type": "array", "items": { "type": "string" } },
+        "isPrivate": { "type": "boolean" },
+        "leagueType": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "maxMembers": { "type": "number" }
+      },
+      "required": ["id", "name", "code", "createdByUserId"]
+    },
+    "MatchResult": {
+      "title": "MatchResult",
+      "description": "Official admin result for a fixture",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "fixtureId": { "type": "string" },
+        "homeScore": { "type": "number" },
+        "awayScore": { "type": "number" },
+        "winnerTeamId": { "type": "string" },
+        "winningMargin": { "type": "number" },
+        "status": { "type": "string" },
+        "finalisedAt": { "type": "string" },
+        "finalisedBy": { "type": "string" }
+      },
+      "required": ["id", "fixtureId", "homeScore", "awayScore", "winnerTeamId", "winningMargin", "status"]
+    },
+    "Feedback": {
+      "title": "Feedback",
+      "description": "Tester feedback entry",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "category": { "type": "string" },
+        "whatHappened": { "type": "string" },
+        "whatExpected": { "type": "string" },
+        "page": { "type": "string" },
+        "contactPermission": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "category", "whatHappened"]
+    }
+  },
+  "firestore": {
+    "collections": {
+      "users": {
+        "entity": "User",
+        "description": "Registered tippers"
+      },
+      "fixtures": {
+        "entity": "Fixture",
+        "description": "Round 24 matches"
+      },
+      "predictions": {
+        "entity": "Prediction",
+        "description": "User tips"
+      },
+      "leagues": {
+        "entity": "League",
+        "description": "User created leagues"
+      },
+      "matchResults": {
+        "entity": "MatchResult",
+        "description": "Final fixture results"
+      },
+      "feedback": {
+        "entity": "Feedback",
+        "description": "Tester feedback"
+      }
+    }
+  }
+}

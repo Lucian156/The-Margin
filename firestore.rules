@@ -1,0 +1,125 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.email == 'admin@themargin.app' ||
+        request.auth.token.email == 'lucian@themargin.app' ||
+        request.auth.token.email == 'lucianarmstrong2019@gmail.com' ||
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true ||
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'
+      );
+    }
+
+    // Users Collection
+    match /users/{userId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if isAdmin();
+    }
+
+    // Predictions Collection
+    match /predictions/{predId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if isAdmin();
+    }
+
+    // Legacy Picks Collection
+    match /picks/{pickId} {
+      allow read: if true;
+      allow create, update: if isAuthenticated();
+      allow delete: if isAdmin();
+    }
+
+    // Rounds & Fixtures Collections
+    match /rounds/{roundId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /fixtures/{fixtureId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Scores & Results Collections
+    match /matchResults/{resultId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /gameScores/{scoreId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /roundScores/{scoreId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Leagues & H2H Collections
+    match /leagues/{leagueId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /leagueMembers/{memberId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /leagueInvitations/{inviteId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /headToHeadFixtures/{h2hId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /headToHeadStandings/{standingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Audit and Admin Collections
+    match /auth_records/{authId} {
+      allow read: if true;
+      allow create, update: if isAuthenticated();
+      allow delete: if isAdmin();
+    }
+
+    match /registration_errors/{errorId} {
+      allow read, create: if true;
+      allow update, delete: if isAdmin();
+    }
+
+    match /adminAuditEvents/{eventId} {
+      allow read, create, update: if isAuthenticated() || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /admins/{adminId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /notifications/{notifId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    // Default fallback
+    match /{document=**} {
+      allow read, write: if isAuthenticated();
+    }
+  }
+}
